@@ -4,21 +4,39 @@ using UnityEngine;
 
 public class CamController : MonoBehaviour
 {
-    public GameObject player;
+    public PlayerController player;
 
-    private Vector3 offset;
+    private Quaternion groundOrientation;
+    bool rotate = false;
+    float rotSpeed = 0.01f;
+    float rotTimeCount = 0.0f;
 
-    // Start is called before the first frame update
     void Start()
     {
-        offset = transform.position - player.transform.position;
+        RotateCam();
+        player.changeGround.AddListener(StartRotation);
     }
 
-    // Update is called once per frame
+
     void LateUpdate()
     {
-        transform.position = player.transform.position + offset;
-        
-        //transform.position = new Vector3(offset.x, offset.y, player.transform.position.z + offset.z);
+        transform.position = player.transform.position - transform.forward*20 + transform.up*5;    
+        if(rotate){
+            SmoothRotation();
+        }    
+    }
+    void StartRotation(){
+        rotate = true;
+        groundOrientation = Quaternion.LookRotation(Vector3.Cross(player.gravityOrientation, Vector3.right), -player.gravityOrientation);
+    }
+
+    void RotateCam(){
+        transform.rotation = Quaternion.LookRotation(Vector3.Cross(player.gravityOrientation, Vector3.right), -player.gravityOrientation);
+    }
+
+    void SmoothRotation(){
+        transform.rotation = Quaternion.Lerp(transform.rotation, groundOrientation, rotTimeCount * rotSpeed);
+        rotTimeCount += Time.deltaTime;
+        if(transform.rotation == groundOrientation) rotate = false;
     }
 }

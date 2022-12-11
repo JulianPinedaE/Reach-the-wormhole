@@ -315,7 +315,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617879050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.12, y: 1.32, z: -1.3}
+  m_LocalPosition: {x: -20.24, y: 11.52, z: 31.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -350,13 +350,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aad0bc4de134d914eb548edfc0883ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
+  speed: 0.673
   jumpForce: 0.5
   maxSpeed: 10
   onGround: 0
   fly: 0
   playerRB: {fileID: 0}
   gravityOrientation: {x: 0, y: 0, z: 0}
+  changeGround:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &617879057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,7 +491,7 @@ MonoBehaviour:
   fuelConsumption: 25
   fuelUseTimer: 1
   fuelRechargeTimer: 1
-  jetpackForce: 15
+  jetpackForce: 20
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,7 +683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3de7e9b049a20d48adb0bdae3383b00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 617879050}
+  player: {fileID: 617879056}
 --- !u!1 &1374945733
 GameObject:
   m_ObjectHideFlags: 0

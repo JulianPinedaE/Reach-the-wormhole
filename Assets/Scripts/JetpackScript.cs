@@ -39,11 +39,9 @@ public class JetpackScript : MonoBehaviour
 
     void UseFuel(float consumption){
         fuel -= consumption;
-        print(fuel);
     }
     void RechargeFuel(float recharge){        
         fuel += recharge;
         if(fuel > 100) fuel = 100;
-        print(fuel);
     }
 }

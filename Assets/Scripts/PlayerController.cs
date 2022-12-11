@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveVector = Vector2.zero;
     private Inputactions inputActions; 
     public Vector3 gravityOrientation = Vector3.zero;
+    public UnityEvent changeGround = new UnityEvent();
     void Start()
     {
         playerRB = GetComponent<Rigidbody>();
@@ -66,6 +68,6 @@ public class PlayerController : MonoBehaviour
 
     public void SetGravityDir(Vector3 groundRot){
         gravityOrientation = groundRot;
-        print(gravityOrientation);
+        changeGround.Invoke();
     }
 }
