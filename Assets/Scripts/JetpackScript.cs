@@ -20,7 +20,7 @@ public class JetpackScript : MonoBehaviour
     void FixedUpdate(){     
         if(playerController.fly && fuel > 0){ //Fly
             fuelUseTimer -= Time.deltaTime;
-            playerController.playerRB.AddForce(Vector3.up*jetpackForce);
+            playerController.playerRB.AddForce(-playerController.gravityOrientation*jetpackForce);
         }
 
         if(fuelUseTimer < 0 && !playerController.onGround){ //Use fuel
