@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
-    public int level = 4;
     List<Transform> platforms = new List<Transform>();
     public Vector3 mapMinBoundaries = new Vector3(20, 0, 0);
     public Vector3 mapMaxBoundaries = new Vector3(40, 20, 20);
     public Transform platformPrefab;
     public PlayerController player;
+    public Transform whormhole;
 
-    void Start(){
+    void OnEnable(){
         CreateMap();
     }
 
 
     void CreateMap(){
         Vector3 platformPos = new Vector3(0, 0, 0);
-        for (int i = 0; i < level; i++)
+        platforms = new List<Transform>();
+        for (int i = 0; i < GameManager.manager.currentLevel; i++)
         {
             Transform newPlatform = Instantiate(platformPrefab, platformPos, Quaternion.identity);  
             newPlatform.Rotate(90, 0, 0);
@@ -32,5 +33,10 @@ public class MapController : MonoBehaviour
         }
 
         player.transform.position = platforms[0].position - (platforms[0].forward*5);
+        whormhole.position = new Vector3(0, 0, platforms[GameManager.manager.currentLevel-1].position.z + 40);
+    }
+
+    public void ReachWhormhole(){
+        GameManager.manager.NewLevel();
     }
 }
