@@ -4,30 +4,33 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
-    public Transform[] platforms;
+    public int level = 4;
+    List<Transform> platforms = new List<Transform>();
+    public Vector3 mapMinBoundaries = new Vector3(20, 0, 0);
+    public Vector3 mapMaxBoundaries = new Vector3(40, 20, 20);
+    public Transform platformPrefab;
     public PlayerController player;
-    private float distanceToGround = float.PositiveInfinity;
-    private int closestGround = 0;
 
     void Start(){
-        player.SetGravityDir(platforms[closestGround].forward);
+        CreateMap();
     }
 
 
-    void LateUpdate(){
-        ClosestGroundDistance();
-    }
-
-    void ClosestGroundDistance(){
-        distanceToGround = Vector3.Distance(player.transform.position, platforms[closestGround].position);
-        for (int i = 0; i < platforms.Length; i++)
+    void CreateMap(){
+        Vector3 platformPos = new Vector3(0, 0, 0);
+        for (int i = 0; i < level; i++)
         {
-            Transform currentPlatform = platforms[i];
-            float currentDistance = Vector3.Distance(player.transform.position, currentPlatform.position);
-            if(currentDistance < distanceToGround){
-                closestGround = i;
-                player.SetGravityDir(currentPlatform.forward);
+            Transform newPlatform = Instantiate(platformPrefab, platformPos, Quaternion.identity);  
+            newPlatform.Rotate(90, 0, 0);
+            if(i > 0){
+                newPlatform.Rotate(0, Random.Range(-120, 120), 0);   
+                newPlatform.position += newPlatform.forward*30;
             }
+            platformPos = new Vector3(0,0,
+                platformPos.z + Random.Range(mapMinBoundaries.z, mapMaxBoundaries.z));
+            platforms.Add(newPlatform);
         }
+
+        player.transform.position = platforms[0].position - (platforms[0].forward*5);
     }
 }

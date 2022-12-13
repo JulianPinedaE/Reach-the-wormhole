@@ -17,8 +17,6 @@ public class PlayerController : MonoBehaviour
     public Rigidbody playerRB;
     private Vector2 moveVector = Vector2.zero;
     private Inputactions inputActions; 
-    public Vector3 gravityOrientation = Vector3.zero;
-    public UnityEvent changeGround = new UnityEvent();
     void Start()
     {
         playerRB = GetComponent<Rigidbody>();
@@ -30,16 +28,13 @@ public class PlayerController : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         if(onGround && context.started){
-            playerRB.AddForce(-gravityOrientation*jumpForce*maxJump, ForceMode.Impulse);     
+            playerRB.AddForce(transform.up*jumpForce*maxJump, ForceMode.Impulse);     
         }
-            // playerRB.AddForce(Vector3.up*jumpForce*maxJump, ForceMode.Impulse);
     }
 
     void FixedUpdate(){      
-        playerRB.AddForce(gravityOrientation * 10);
         moveVector = inputActions.Player.Move.ReadValue<Vector2>();
-        Vector3 moveDir = Vector3.Cross(gravityOrientation, new Vector3 (moveVector.y, 0, -moveVector.x));
-        // Vector3 moveDir = new Vector3(moveVector.x, 0.0f, moveVector.y);
+        Vector3 moveDir = moveVector.y*transform.forward + moveVector.x*transform.right;
         playerRB.AddForce(moveDir*speed*maxSpeed);
     }
     
@@ -64,10 +59,5 @@ public class PlayerController : MonoBehaviour
         {
             onGround = false;
         }
-    }
-
-    public void SetGravityDir(Vector3 groundRot){
-        gravityOrientation = groundRot;
-        changeGround.Invoke();
     }
 }
