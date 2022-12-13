@@ -9,6 +9,10 @@ public class PlayerController : MonoBehaviour
     [Range(0.2f,1)]
     public float speed = 0.5f;
     [Range(0.2f,1)]
+    public float oxygen = 100;
+    public float oxygenUseRate = 20;
+    public float oxygenGainRate = 50;
+    public float oxygenTimer = 1;
     public float jumpForce = 0.5f;
     public float maxSpeed = 10;
     private float maxJump = 10;
@@ -36,6 +40,8 @@ public class PlayerController : MonoBehaviour
         moveVector = inputActions.Player.Move.ReadValue<Vector2>();
         Vector3 moveDir = moveVector.y*transform.forward + moveVector.x*transform.right;
         playerRB.AddForce(moveDir*speed*maxSpeed);
+
+        HandleOxygen();
     }
     
     public void OnJetpack(InputAction.CallbackContext context)
@@ -59,5 +65,26 @@ public class PlayerController : MonoBehaviour
         {
             onGround = false;
         }
+    }
+
+    void HandleOxygen(){          
+        if(!onGround && oxygen > 0){ 
+            oxygenTimer -= Time.deltaTime;
+        }
+
+        if(oxygenTimer <= 0 && !onGround){
+            oxygenTimer = 1;
+            oxygen -= oxygenUseRate;
+            if(oxygen <= 0) GameManager.manager.GameOver();
+        }
+
+        if(onGround && oxygen < 100){
+            oxygenTimer -= Time.deltaTime;
+            if(oxygenTimer <= 0){
+                oxygenTimer = 1;
+                oxygen += oxygenGainRate;
+            }
+        }
+        oxygen = oxygen > 100 ? 100 : oxygen;
     }
 }

@@ -30,4 +30,8 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         //newLevel.Invoke();
     }
+
+    public void GameOver(){
+        print("Feo");
+    }
 }

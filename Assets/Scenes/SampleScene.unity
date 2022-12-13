@@ -366,6 +366,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.673
+  oxygen: 100
+  oxygenUseRate: 10
+  oxygenGainRate: 30
+  oxygenTimer: 1
   jumpForce: 0.5
   maxSpeed: 10
   onGround: 0
