@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody playerRB;
     private Vector2 moveVector = Vector2.zero;
     private Inputactions inputActions; 
+    public ConsumableBar oxygenBar;
     void Start()
     {
         playerRB = GetComponent<Rigidbody>();
@@ -78,6 +79,7 @@ public class PlayerController : MonoBehaviour
         if(oxygenTimer <= 0 && !onGround){
             oxygenTimer = 1;
             oxygen -= oxygenUseRate;
+            oxygenBar.UpdateValue((int)oxygen);
             if(oxygen <= 0 && GameManager.manager.onGame) GameManager.manager.GameOver();
         }
 
@@ -86,6 +88,7 @@ public class PlayerController : MonoBehaviour
             if(oxygenTimer <= 0){
                 oxygenTimer = 1;
                 oxygen += oxygenGainRate;
+                oxygenBar.UpdateValue((int)oxygen);
             }
         }
         oxygen = oxygen > 100 ? 100 : oxygen;

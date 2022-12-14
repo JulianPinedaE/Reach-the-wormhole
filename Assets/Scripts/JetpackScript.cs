@@ -12,6 +12,7 @@ public class JetpackScript : MonoBehaviour
     public float fuelRechargeTimer = 1;
     public float jetpackForce = 10;
     private PlayerController playerController;
+    public ConsumableBar fuelBar;
 
     void Start(){
         playerController = GetComponent<PlayerController>();
@@ -26,6 +27,7 @@ public class JetpackScript : MonoBehaviour
         if(fuelUseTimer < 0 && !playerController.onGround){ //Use fuel
             fuelUseTimer = 1;
             UseFuel(fuelConsumption);
+            fuelBar.UpdateValue((int)fuel);
         }
 
         if(playerController.onGround && fuel < 100){ //Recharge Fuel
@@ -33,6 +35,7 @@ public class JetpackScript : MonoBehaviour
             if(fuelRechargeTimer <= 0){
                 fuelRechargeTimer = 1;
                 RechargeFuel(fuelRechargeRate);
+                fuelBar.UpdateValue((int)fuel);
             }
         }
     }
