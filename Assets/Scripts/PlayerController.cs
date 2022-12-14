@@ -36,10 +36,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void FixedUpdate(){      
-        moveVector = inputActions.Player.Move.ReadValue<Vector2>();
-        Vector3 moveDir = moveVector.y*transform.forward + moveVector.x*transform.right;
-        playerRB.AddForce(moveDir*speed*maxSpeed);
+    void FixedUpdate(){     
+        if(GameManager.manager.onGame){ 
+            moveVector = inputActions.Player.Move.ReadValue<Vector2>();
+            Vector3 moveDir = moveVector.y*transform.forward + moveVector.x*transform.right;
+            playerRB.AddForce(moveDir*speed*maxSpeed);
+        }
+        else playerRB.constraints = RigidbodyConstraints.FreezePosition;
 
         HandleOxygen();
     }
@@ -75,7 +78,7 @@ public class PlayerController : MonoBehaviour
         if(oxygenTimer <= 0 && !onGround){
             oxygenTimer = 1;
             oxygen -= oxygenUseRate;
-            if(oxygen <= 0) GameManager.manager.GameOver();
+            if(oxygen <= 0 && GameManager.manager.onGame) GameManager.manager.GameOver();
         }
 
         if(onGround && oxygen < 100){

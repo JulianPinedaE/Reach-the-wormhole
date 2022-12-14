@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverPanel;
     public int currentLevel = 0;
     string playerName;
-    List<PersonalScore> leaders = new List<PersonalScore>();
+    public List<PersonalScore> leaders = new List<PersonalScore>();
+    public bool onGame = false;
     private void Awake() 
     { 
         DontDestroyOnLoad(this.gameObject);
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
     public void NewLevel(bool reload = true){
         playerName = "";
         currentLevel++;
+        onGame = true;
         if(reload){
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
@@ -54,6 +56,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(){
         gameOverPanel.SetActive(true);
+        onGame = false;
     }
 
     public void NewName(string name){   
@@ -64,13 +67,10 @@ public class GameManager : MonoBehaviour
         if(playerName == "") return;       
         PersonalScore data = new PersonalScore(currentLevel, playerName);
         LoadFile();
-        if(leaders.Count < 3) leaders.Add(data);
+        if(leaders.Count < 5) leaders.Add(data);
         else {
             leaders.Sort((p1,p2)=>p1.score.CompareTo(p2.score));
-            leaders[leaders.Count-1] = data;
-            foreach( var x in leaders) {
-                print(x.score);
-            }
+            if(leaders[0].score < data.score) leaders[0] = data;
         }
         SaveFile();
     }
